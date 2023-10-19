@@ -1,5 +1,7 @@
 package com.example.member.service;
 
+import com.example.member.dto.MemberRequest;
+import com.example.member.entity.LoginHistory;
 import com.example.member.entity.Member;
 import com.example.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,15 +13,17 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
-    public void 회원_가입() {
-        Member member = new Member();
-        memberRepository.save(member);
+    public Member 회원_가입(MemberRequest request) {
+        Member member = new Member(null,request.password(),request.email(),request.username(),null,null);
+        var newMember= memberRepository.save(member);
+        return newMember;
     }
 
     public void 로그인(long loginId) {
         var member = memberRepository.findById(loginId);
         if (member.isPresent()) {
             // todo: 로그인
+            // loginHistory 넣기
         } else {
             // todo: 로그인 실패
         }

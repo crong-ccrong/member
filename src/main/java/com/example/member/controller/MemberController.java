@@ -1,5 +1,8 @@
 package com.example.member.controller;
 
+import com.example.member.dto.MemberRequest;
+import com.example.member.dto.MemberResponse;
+import com.example.member.repository.LoginHistoryRepository;
 import com.example.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,11 +15,15 @@ public class MemberController {
 
     // @Autowired보다 생성자 주입이 권장됨
     private final MemberService memberService;
+    private final LoginHistoryRepository loginHistoryRepository;
 
     @ResponseStatus(code = HttpStatus.CREATED) // 지향하는 방법은 ResponseEntity.메서드 이지만 간단히 보기 위해 이 어노테이션 사용
     @PostMapping(value = "/auth/signup")
-    public void 회원_가입() {
-        memberService.회원_가입();
+    public MemberResponse 회원_가입(MemberRequest request) {
+        // memberService.회원_가입(MemberRequest request);
+        //var member = new MemberRequest(null, );
+        var newMember = memberService.회원_가입(request);
+        return new MemberResponse(newMember.getId(), newMember.getEmail(), newMember.getUserName());
     }
 
     @ResponseStatus(code = HttpStatus.OK)
